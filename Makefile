@@ -3,18 +3,19 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: anloisea <anloisea@student.42.fr>          +#+  +:+       +#+         #
+#    By: antoine <antoine@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/05 16:52:44 by anloisea          #+#    #+#              #
-#    Updated: 2023/01/09 15:07:41 by anloisea         ###   ########.fr        #
+#    Updated: 2023/01/10 11:20:50 by antoine          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	=	philo
 
 SRCS	=	./srcs/main.c \
-			./srcs/threads.c \
 			./srcs/free.c \
+			./srcs/data.c \
+			./srcs/threads.c \
 			./srcs/utils/ft_putstr_fd.c \
 			./srcs/utils/ft_atoi.c
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   threads.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anloisea <anloisea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: antoine <antoine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 11:58:30 by anloisea          #+#    #+#             */
-/*   Updated: 2023/01/09 18:22:35 by anloisea         ###   ########.fr       */
+/*   Updated: 2023/01/10 16:25:51 by antoine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,80 @@
 
 void	*routine(void *arg)
 {
-	t_philo *data = arg;
-	pthread_mutex_lock(data->fork);
-	printf("Philo has taken a fork\n");
-	pthread_mutex_destroy(data->fork);
+	t_philo *philo;
+
+	philo = (t_philo *)arg;
+	if (philo->pos == 0)
+	{
+		if(!pthread_mutex_lock(&(philo + (philo->data->nb_of_philo -1))->fork))
+		{
+			printf("%d has taken fork %d\n", philo->pos, philo->pos + philo->data->nb_of_philo -1);
+			if (!pthread_mutex_lock(&philo->fork))
+			{
+				printf("%d has taken fork %d\n", philo->pos, philo->pos);
+				printf("%d is eating\n", philo->pos);
+				usleep(philo->data->time_to_eat);
+				pthread_mutex_unlock(&(philo + (philo->data->nb_of_philo - 1))->fork);
+				//printf("philo %d has realeased fork %d\n", philo->pos, philo->pos + philo->data->nb_of_philo - 1);
+				pthread_mutex_unlock(&philo->fork);
+				//printf("philo %d has realeased fork %d\n", philo->pos, philo->pos);
+				printf("%d is sleeping\n", philo->pos);
+				usleep(philo->data->time_to_sleep);
+			}
+			else
+			{
+				pthread_mutex_unlock(&(philo + (philo->data->nb_of_philo - 1))->fork);
+				//printf("philo %d has realeased fork %d\n", philo->pos, philo->pos);
+				printf("%d is thinking\n", philo->pos);
+			}
+		}
+		else
+		{
+			printf("%d is thinking\n", philo->pos);
+			usleep(philo->data->time_to_die);
+		}
+	}
+	else
+	{
+		if(!pthread_mutex_lock(&(philo - 1)->fork))
+		{
+			printf("%d has taken fork %d\n", philo->pos, philo->pos -1);
+			if (!pthread_mutex_lock(&philo->fork))
+			{
+				printf("%d has taken fork %d\n", philo->pos, philo->pos);
+				printf("%d is eating\n", philo->pos);
+				usleep(philo->data->time_to_eat);
+				pthread_mutex_unlock(&(philo - 1)->fork);
+				//printf("philo %d has realeased fork %d\n", philo->pos, philo->pos - 1);
+				pthread_mutex_unlock(&philo->fork);
+				//printf("philo %d has realeased fork %d\n", philo->pos, philo->pos);		
+				printf("%d is sleeping\n", philo->pos);
+				usleep(philo->data->time_to_sleep);
+			}
+			else
+			{
+				pthread_mutex_unlock(&(philo - 1)->fork);
+				//printf("philo %d has realeased fork %d\n", philo->pos, philo->pos - 1);
+				printf("%d is thinking\n", philo->pos);
+			}
+		}
+		else
+		{
+			printf("%d is thinking\n", philo->pos);
+			usleep(philo->data->time_to_die);
+		}
+	}
 	return (NULL);
 }
 
-int	create_threads(t_data *data)
+int	create_threads(t_philo *philos)
 {
 	int	i;
 
 	i = 0;
-	while (i < data->nb_of_philo)
+	while (i < philos->data->nb_of_philo)
 	{
-		if(pthread_create(&data->philo[i]->th, NULL, &routine, data->philo[i]) != 0)
+		if(pthread_create(&(philos + i)->philo, NULL, &routine, (philos + i)) != 0)
 		{
 			ft_putstr_fd("Failed to create thread\n", 2);
 			return (1);
@@ -38,14 +97,14 @@ int	create_threads(t_data *data)
 	return (0);
 }
 
-int	join_threads(t_philo *data)
+int	join_threads(t_philo *philos)
 {
 	int		i;
 
 	i = 0;
-	while (i < data->nb_of_philo)
+	while (i < philos->data->nb_of_philo)
 	{
-		if (pthread_join(data->philo[i], NULL) != 0)
+		if (pthread_join((philos + i)->philo, NULL) != 0)
 		{
 			ft_putstr_fd("Failed to join thread\n", 2);
 			return(1);
