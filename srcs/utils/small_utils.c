@@ -1,41 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free.c                                             :+:      :+:    :+:   */
+/*   small_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: antoine <antoine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/09 13:30:37 by anloisea          #+#    #+#             */
-/*   Updated: 2023/01/12 15:07:59 by antoine          ###   ########.fr       */
+/*   Created: 2023/01/12 12:33:12 by antoine           #+#    #+#             */
+/*   Updated: 2023/01/12 12:42:48 by antoine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/philo.h"
-
-void	free_threads(t_philo *philos)
+int	is_even(int nb)
 {
-	int	i;
-
-	i = 0;
-	while (i < philos->data->nb_of_philo)
-	{
-		free(&philos[i].thread);
-		i++;
-	}
+	if (nb % 2 == 0)
+		return (1);
+	else
+		return (0);
 }
 
-void	free_data(t_philo *philos)
+int	is_alpha(char c)
 {
-	int	i;
-	int	nb_of_philo;
-
-	nb_of_philo = philos->data->nb_of_philo;
-	free(philos->data);
-	i = 0;
-	while (i < nb_of_philo)
-	{
-		pthread_mutex_destroy(&philos[i].fork);
-		i++;
-	}
-	free(philos);
+	if (c >= 'a' && c <= 'z')
+		return (1);
+	else if (c >= 'A' && c<= 'Z')
+		return (1);
+	else
+		return (0);
 }
