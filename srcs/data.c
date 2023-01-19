@@ -6,7 +6,7 @@
 /*   By: antoine <antoine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 11:01:49 by antoine           #+#    #+#             */
-/*   Updated: 2023/01/12 14:23:41 by antoine          ###   ########.fr       */
+/*   Updated: 2023/01/18 13:06:03 by antoine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ t_philo	*init_philo(char *argv[])
 	i = 0;
 	while (i < data->nb_of_philo)
 	{
+		philo[i].has_eaten = 0;
+		philo[i].is_fed = false;
 		philo[i].data = data;
 		philo[i].pos = i + 1;
 		pthread_mutex_init(&philo[i].fork, NULL);
@@ -47,12 +49,16 @@ t_data	*init_data(char *argv[])
 	if (data == NULL)
 		return (NULL);
 	gettimeofday(&tv, NULL);
-	data->start_time = 1000000 * tv.tv_sec + tv.tv_usec;
+	data->start_time = (1000 * tv.tv_sec) + (tv.tv_usec / 1000);
+	data->someone_died = false;
+	data->all_fed = false;
 	data->nb_of_philo = ft_atoi(argv[1]);
 	data->time_to_die = ft_atoi(argv[2]);
 	data->time_to_eat = (ft_atoi(argv[3]) * 1000);
 	data->time_to_sleep = (ft_atoi(argv[4]) * 1000);
 	if (argv[5])
 		data->must_eat = ft_atoi(argv[5]);
+	else
+		data->must_eat = -1;
 	return (data);
 }

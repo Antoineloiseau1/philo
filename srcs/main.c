@@ -6,7 +6,7 @@
 /*   By: antoine <antoine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 17:01:29 by anloisea          #+#    #+#             */
-/*   Updated: 2023/01/12 15:52:02 by antoine          ###   ########.fr       */
+/*   Updated: 2023/01/18 18:01:19 by antoine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,47 @@ void print_data(t_data *data)
 	printf("time to sleep = %d\n", data->time_to_sleep);
 }
 
+void	*check_all_fed(void *arg)
+{
+	t_philo	*philos;
+	int		i;
+	int		fed_philos;
+	
+	philos = (t_philo *)arg;
+	fed_philos = 0;
+	while (1)
+	{
+		i = 0;
+		while (i < philos->data->nb_of_philo)
+		{
+			if (philos[i].has_eaten == philos->data->must_eat && philos[i].is_fed == false)
+			{
+				fed_philos++;
+				philos[i].is_fed = true;
+			}
+			i++;
+		}
+		if (fed_philos == philos->data->nb_of_philo)
+		{
+			i = 0;
+			while (i < philos->data->nb_of_philo)
+			{
+				philos[i].data->all_fed = true;
+				i++;
+			}
+			return (NULL);
+		}
+	}
+	return (NULL);
+}
+
 void	*check_vitals(void *arg)
 {
 	t_philo *philo;
 	int		i;
 
 	philo = (t_philo *)arg;
-	while (1)
+	while (!philo->data->all_fed)
 	{
 		i = 0;
 		while (i < philo->data->nb_of_philo)
@@ -34,6 +68,13 @@ void	*check_vitals(void *arg)
 			if (get_time(philo->data) - philo[i].last_meal >= philo->data->time_to_die)
 			{
 				printf("%lldms %d has died\n", get_time(philo->data), philo[i].pos);
+				i = 0;
+				while (i < philo->data->nb_of_philo)
+				{
+					philo[i].data->someone_died = true;
+					i++;
+					
+				}
 				return (NULL);
 			}
 			i++;
@@ -46,6 +87,7 @@ int main(int argc, char *argv[])
 {
 	t_philo		*philos;
 	pthread_t 	vitals;
+	pthread_t	check_meals;
 
 	if (argc < 5 || !(argc >= 5 && argc <= 6))
 	{
@@ -57,14 +99,19 @@ int main(int argc, char *argv[])
 	philos = init_philo(argv);
 	if (philos == NULL)
 		return (1);
+	if (create_threads(philos) != 0)
+	{
+		free_data(philos);
+		return (1);
+	}
 	pthread_create(&vitals, NULL, &check_vitals, philos);
 	pthread_detach(vitals);
-	while(1)
+	pthread_create(&check_meals, NULL, &check_all_fed, philos);
+	pthread_detach(check_meals);
+	if (join_threads(philos) != 0)
 	{
-		if (create_threads(philos) != 0)
-			return (1);
-		if (join_threads(philos) != 0)
-			return (1);
+		free_data(philos);
+		return (1);
 	}
 	free_data(philos);
 	return (0);

@@ -6,7 +6,7 @@
 #    By: antoine <antoine@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/05 16:52:44 by anloisea          #+#    #+#              #
-#    Updated: 2023/01/12 12:34:31 by antoine          ###   ########.fr        #
+#    Updated: 2023/01/18 17:55:43 by antoine          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,6 +17,7 @@ SRCS	=	./srcs/main.c \
 			./srcs/data.c \
 			./srcs/threads.c \
 			./srcs/get_time.c \
+			./srcs/actions.c \
 			./srcs/utils/check_for_errors.c \
 			./srcs/utils/small_utils.c \
 			./srcs/utils/ft_putstr_fd.c \
@@ -28,7 +29,7 @@ CC		=	gcc
 
 CFLAGS	=	-g -Wall -Werror -Wextra -pthread
 
-DEBUG	=	-fsanitize=thread
+DEBUG	=	-fsanitize=thread -fsanitize=leak
 
 .c.o:
 			${CC} -c ${CFLAGS} $< -o ${<:.c=.o}

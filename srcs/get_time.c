@@ -6,7 +6,7 @@
 /*   By: antoine <antoine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 12:14:26 by antoine           #+#    #+#             */
-/*   Updated: 2023/01/12 12:17:34 by antoine          ###   ########.fr       */
+/*   Updated: 2023/01/18 11:54:57 by antoine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ long long int	get_time(t_data *data)
 	struct timeval tv;
 	
 	gettimeofday(&tv, NULL);
-	current_time = 1000000 * tv.tv_sec + tv.tv_usec;
-	current_time = (current_time - data->start_time) / 1000;
+	current_time = (1000 * tv.tv_sec) + (tv.tv_usec / 1000);
+	current_time = (current_time - data->start_time);
 	return (current_time);		
 }

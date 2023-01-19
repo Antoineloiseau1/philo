@@ -6,7 +6,7 @@
 /*   By: antoine <antoine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 17:04:22 by anloisea          #+#    #+#             */
-/*   Updated: 2023/01/12 15:08:43 by antoine          ###   ########.fr       */
+/*   Updated: 2023/01/18 17:58:55 by antoine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <unistd.h>
 # include <sys/time.h>
 # include <string.h>
+# include <stdbool.h>
 # include "utils.h"
 
 typedef struct 		s_data
@@ -29,6 +30,8 @@ typedef struct 		s_data
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				must_eat;
+	bool			someone_died;
+	bool			all_fed;
 }					t_data;
 
 typedef struct 		s_philo
@@ -37,6 +40,8 @@ typedef struct 		s_philo
 	pthread_t		thread;
 	pthread_mutex_t	fork;
 	int				pos;
+	int				has_eaten;
+	bool			is_fed;
 	long long int	last_meal;
 }					t_philo;
 
@@ -49,6 +54,11 @@ long long int	get_time(t_data *data);
 //THREADS
 int				create_threads(t_philo *philos);
 int				join_threads(t_philo *philos);
+
+//ACTIONS
+void			eat(t_philo *philo);
+void			go_to_sleep(t_philo *philo);
+void			think(t_philo *philo);
 
 //FREE
 void			free_data(t_philo *philos);
