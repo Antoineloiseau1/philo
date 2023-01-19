@@ -6,7 +6,7 @@
 /*   By: antoine <antoine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 17:01:29 by anloisea          #+#    #+#             */
-/*   Updated: 2023/01/18 18:01:19 by antoine          ###   ########.fr       */
+/*   Updated: 2023/01/19 16:20:33 by antoine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	*check_all_fed(void *arg)
 	
 	philos = (t_philo *)arg;
 	fed_philos = 0;
-	while (1)
+	while (!dead_or_fed(philos->data))
 	{
 		i = 0;
 		while (i < philos->data->nb_of_philo)
@@ -60,14 +60,14 @@ void	*check_vitals(void *arg)
 	int		i;
 
 	philo = (t_philo *)arg;
-	while (!philo->data->all_fed)
+	while (!dead_or_fed(philo->data))
 	{
 		i = 0;
 		while (i < philo->data->nb_of_philo)
 		{
 			if (get_time(philo->data) - philo[i].last_meal >= philo->data->time_to_die)
 			{
-				printf("%lldms %d has died\n", get_time(philo->data), philo[i].pos);
+				ft_print(&philo[i], "has died");
 				i = 0;
 				while (i < philo->data->nb_of_philo)
 				{

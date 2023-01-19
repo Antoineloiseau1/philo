@@ -6,7 +6,7 @@
 /*   By: antoine <antoine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 17:04:22 by anloisea          #+#    #+#             */
-/*   Updated: 2023/01/18 17:58:55 by antoine          ###   ########.fr       */
+/*   Updated: 2023/01/19 16:00:44 by antoine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,15 @@ typedef struct 		s_data
 	int				must_eat;
 	bool			someone_died;
 	bool			all_fed;
+	pthread_mutex_t	print;
 }					t_data;
 
 typedef struct 		s_philo
 {
 	t_data			*data;
 	pthread_t		thread;
-	pthread_mutex_t	fork;
+	pthread_mutex_t	left_fork;
+	pthread_mutex_t	right_fork;
 	int				pos;
 	int				has_eaten;
 	bool			is_fed;
@@ -54,11 +56,13 @@ long long int	get_time(t_data *data);
 //THREADS
 int				create_threads(t_philo *philos);
 int				join_threads(t_philo *philos);
+int				dead_or_fed(t_data *data);
 
 //ACTIONS
 void			eat(t_philo *philo);
 void			go_to_sleep(t_philo *philo);
 void			think(t_philo *philo);
+void			ft_print(t_philo *philo, char *msg);
 
 //FREE
 void			free_data(t_philo *philos);

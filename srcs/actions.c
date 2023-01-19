@@ -6,21 +6,32 @@
 /*   By: antoine <antoine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 17:54:48 by antoine           #+#    #+#             */
-/*   Updated: 2023/01/18 17:57:05 by antoine          ###   ########.fr       */
+/*   Updated: 2023/01/19 16:29:10 by antoine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
+void	ft_print(t_philo *philo, char *msg)
+{
+	pthread_mutex_lock(&philo->data->print);
+	printf("%lldms %d %s\n", get_time(philo->data), philo->pos, msg);
+	pthread_mutex_unlock(&philo->data->print);
+}
+
 void	think(t_philo *philo)
 {
-	printf("%lldms %d is thinking\n", get_time(philo->data), philo->pos);
+	if (!dead_or_fed(philo->data))
+		ft_print(philo, "is thinking");
 }
 
 void	go_to_sleep(t_philo *philo)
 {
-	printf("%lldms %d is sleeping\n", get_time(philo->data), philo->pos);
-	usleep(philo->data->time_to_sleep);
+	if (!dead_or_fed(philo->data))
+	{
+		ft_print(philo, "is sleeping");
+		usleep(philo->data->time_to_sleep);
+	}
 }
 
 void	eat(t_philo *philo)
@@ -28,27 +39,33 @@ void	eat(t_philo *philo)
 	pthread_mutex_t first_fork;
 	pthread_mutex_t	second_fork;
 	
-	if (is_even(philo->pos % philo->data->nb_of_philo))
+	if (is_even(philo->pos))
 	{
 		//takes left_fork first
-		first_fork = (philo + ((philo->pos + 1) % philo->data->nb_of_philo))->fork;
-		second_fork = philo->fork;
+		first_fork = philo->left_fork;
+		second_fork = philo->right_fork;
 		
 	}
 	else
 	{
 		//takes right fork first
-		first_fork = philo->fork;
-		second_fork = (philo + ((philo->pos + 1) % philo->data->nb_of_philo))->fork;		
+		first_fork = philo->right_fork;
+		second_fork = philo->left_fork;		
 	}
-	pthread_mutex_lock(&first_fork);
-	printf("%lldms %d has taken a fork\n", get_time(philo->data), philo->pos);
-	pthread_mutex_lock(&second_fork);
-	printf("%lldms %d has taken a fork\n", get_time(philo->data), philo->pos);
-	printf("%lldms %d is eating\n", get_time(philo->data), philo->pos);
-	usleep(philo->data->time_to_eat);
-	philo->has_eaten += 1;
-	pthread_mutex_unlock(&second_fork);
+	if (!dead_or_fed(philo->data))
+	{
+		pthread_mutex_lock(&first_fork);
+		ft_print(philo, "has taken a fork");
+	}
+	if (!dead_or_fed(philo->data))
+	{
+		pthread_mutex_lock(&second_fork);
+		ft_print(philo, "has taken a fork");
+		philo->last_meal = get_time(philo->data);
+		ft_print(philo, "is eating");
+		usleep(philo->data->time_to_eat);
+		philo->has_eaten += 1;
+		pthread_mutex_unlock(&second_fork);
+	}
 	pthread_mutex_unlock(&first_fork);
-	philo->last_meal = get_time(philo->data);
 }

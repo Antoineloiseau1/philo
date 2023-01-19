@@ -6,7 +6,7 @@
 /*   By: antoine <antoine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 11:01:49 by antoine           #+#    #+#             */
-/*   Updated: 2023/01/18 13:06:03 by antoine          ###   ########.fr       */
+/*   Updated: 2023/01/19 15:54:10 by antoine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,32 +24,34 @@ t_philo	*init_philo(char *argv[])
 	philo = malloc(sizeof(t_philo) * data->nb_of_philo);
 	if (!philo)							
 		return (NULL);
+	data->start_time = get_time(data);
 	i = 0;
 	while (i < data->nb_of_philo)
 	{
 		philo[i].has_eaten = 0;
+		philo[i].last_meal = 0;
 		philo[i].is_fed = false;
 		philo[i].data = data;
 		philo[i].pos = i + 1;
-		pthread_mutex_init(&philo[i].fork, NULL);
-		philo[i].last_meal = 0;
+		pthread_mutex_init(&philo[i].right_fork, NULL);
+		if (i > 0)
+			philo[i].left_fork = philo[i - 1].right_fork;
 		i++;
 	}
+	philo[0].left_fork = philo[i - 1].right_fork;
 	return (philo);
 }
 
 t_data	*init_data(char *argv[])
 {
 	t_data			*data;
-	struct timeval	tv;
 	
 	if (check_for_errors(argv))
 		return (NULL);
 	data = malloc(sizeof(t_data));
 	if (data == NULL)
 		return (NULL);
-	gettimeofday(&tv, NULL);
-	data->start_time = (1000 * tv.tv_sec) + (tv.tv_usec / 1000);
+	data->start_time = 0;
 	data->someone_died = false;
 	data->all_fed = false;
 	data->nb_of_philo = ft_atoi(argv[1]);
@@ -60,5 +62,6 @@ t_data	*init_data(char *argv[])
 		data->must_eat = ft_atoi(argv[5]);
 	else
 		data->must_eat = -1;
+	pthread_mutex_init(&data->print, NULL);
 	return (data);
 }

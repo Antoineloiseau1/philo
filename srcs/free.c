@@ -6,7 +6,7 @@
 /*   By: antoine <antoine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 13:30:37 by anloisea          #+#    #+#             */
-/*   Updated: 2023/01/18 11:37:06 by antoine          ###   ########.fr       */
+/*   Updated: 2023/01/19 16:13:41 by antoine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,13 @@ void	free_data(t_philo *philos)
 	int	nb_of_philo;
 
 	nb_of_philo = philos->data->nb_of_philo;
-	free(philos->data);
 	i = 0;
 	while (i < nb_of_philo)
 	{
-		pthread_mutex_destroy(&philos[i].fork);
+		pthread_mutex_destroy(&philos[i].right_fork);
 		i++;
 	}
+	// pthread_mutex_destroy(&philos->data->print);
+	// free(philos->data);
 	free(philos);
 }
