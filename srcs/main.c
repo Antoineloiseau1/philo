@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antoine <antoine@student.42.fr>            +#+  +:+       +#+        */
+/*   By: anloisea <anloisea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 17:01:29 by anloisea          #+#    #+#             */
-/*   Updated: 2023/01/19 16:20:33 by antoine          ###   ########.fr       */
+/*   Updated: 2023/01/20 17:44:14 by anloisea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,9 +83,18 @@ void	*check_vitals(void *arg)
 	return (NULL);
 }
 
+void	one_philo(t_philo *philo)
+{
+	ft_print(philo, "has taken a fork");
+	msleep(philo->data->time_to_die);
+	ft_print(philo, "has died");
+	pthread_mutex_destroy(&philo->data->print);
+	free_data(philo);
+}
+
 int main(int argc, char *argv[])
 {
-	t_philo		*philos;
+	t_philo		*philo;
 	pthread_t 	vitals;
 	pthread_t	check_meals;
 
@@ -96,23 +105,28 @@ int main(int argc, char *argv[])
 		ft_putstr_fd("time_to_sleep [number_of_time_each_philosopher_must_eat]\n", 2);
 		return (1);	
 	}
-	philos = init_philo(argv);
-	if (philos == NULL)
+	philo = init_philo(argv);
+	if (philo == NULL)
 		return (1);
-	if (create_threads(philos) != 0)
+	if (philo->data->nb_of_philo == 1)
 	{
-		free_data(philos);
+		one_philo(philo);
+		return (0);
+	}
+	if (create_threads(philo) != 0)
+	{
+		free_data(philo);
 		return (1);
 	}
-	pthread_create(&vitals, NULL, &check_vitals, philos);
+	pthread_create(&vitals, NULL, &check_vitals, philo);
 	pthread_detach(vitals);
-	pthread_create(&check_meals, NULL, &check_all_fed, philos);
+	pthread_create(&check_meals, NULL, &check_all_fed, philo);
 	pthread_detach(check_meals);
-	if (join_threads(philos) != 0)
+	if (join_threads(philo) != 0)
 	{
-		free_data(philos);
+		free_data(philo);
 		return (1);
 	}
-	free_data(philos);
+	free_data(philo);
 	return (0);
 }

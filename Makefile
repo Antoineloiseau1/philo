@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: antoine <antoine@student.42.fr>            +#+  +:+       +#+         #
+#    By: anloisea <anloisea@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/05 16:52:44 by anloisea          #+#    #+#              #
-#    Updated: 2023/01/18 17:55:43 by antoine          ###   ########.fr        #
+#    Updated: 2023/01/20 13:17:41 by anloisea         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ SRCS	=	./srcs/main.c \
 			./srcs/free.c \
 			./srcs/data.c \
 			./srcs/threads.c \
-			./srcs/get_time.c \
+			./srcs/time.c \
 			./srcs/actions.c \
 			./srcs/utils/check_for_errors.c \
 			./srcs/utils/small_utils.c \
@@ -29,7 +29,7 @@ CC		=	gcc
 
 CFLAGS	=	-g -Wall -Werror -Wextra -pthread
 
-DEBUG	=	-fsanitize=thread -fsanitize=leak
+DEBUG	=	-fsanitize=thread
 
 .c.o:
 			${CC} -c ${CFLAGS} $< -o ${<:.c=.o}

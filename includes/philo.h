@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antoine <antoine@student.42.fr>            +#+  +:+       +#+        */
+/*   By: anloisea <anloisea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 17:04:22 by anloisea          #+#    #+#             */
-/*   Updated: 2023/01/19 16:00:44 by antoine          ###   ########.fr       */
+/*   Updated: 2023/01/20 13:27:42 by anloisea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ typedef struct 		s_philo
 {
 	t_data			*data;
 	pthread_t		thread;
-	pthread_mutex_t	left_fork;
+	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	right_fork;
 	int				pos;
 	int				has_eaten;
@@ -51,6 +51,9 @@ typedef struct 		s_philo
 //DATA_INIT
 t_data			*init_data(char *argv[]);
 t_philo			*init_philo(char *argv[]);
+
+//TIME
+void			msleep(long long int ms);
 long long int	get_time(t_data *data);
 
 //THREADS
@@ -65,7 +68,6 @@ void			think(t_philo *philo);
 void			ft_print(t_philo *philo, char *msg);
 
 //FREE
-void			free_data(t_philo *philos);
-void			free_threads(t_philo *philos);
+void			free_data(t_philo *philo);
 
 #endif
