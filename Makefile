@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: anloisea <anloisea@student.42.fr>          +#+  +:+       +#+         #
+#    By: antoine <antoine@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/05 16:52:44 by anloisea          #+#    #+#              #
-#    Updated: 2023/01/20 13:17:41 by anloisea         ###   ########.fr        #
+#    Updated: 2023/01/23 13:00:07 by antoine          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,8 @@ SRCS	=	./srcs/main.c \
 			./srcs/utils/check_for_errors.c \
 			./srcs/utils/small_utils.c \
 			./srcs/utils/ft_putstr_fd.c \
-			./srcs/utils/ft_atoi.c
+			./srcs/utils/ft_atoi.c \
+			./srcs/detached_threads.c
 
 OBJS 	=	${SRCS:.c=.o}
 
@@ -29,7 +30,7 @@ CC		=	gcc
 
 CFLAGS	=	-g -Wall -Werror -Wextra -pthread
 
-DEBUG	=	-fsanitize=thread
+#DEBUG	=	-fsanitize=thread
 
 .c.o:
 			${CC} -c ${CFLAGS} $< -o ${<:.c=.o}

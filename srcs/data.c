@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   data.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anloisea <anloisea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: antoine <antoine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 11:01:49 by antoine           #+#    #+#             */
-/*   Updated: 2023/01/20 15:17:28 by anloisea         ###   ########.fr       */
+/*   Updated: 2023/01/23 13:52:29 by antoine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_philo	*init_philo(char *argv[])
 {
 	t_philo	*philo;
 	t_data	*data;
-	int 	i;
+	int		i;
 
 	data = init_data(argv);
 	if (!data)
@@ -45,9 +45,7 @@ t_data	*init_data(char *argv[])
 {
 	t_data			*data;
 	struct timeval	time;
-	
-	if (check_for_errors(argv))
-		return (NULL);
+
 	data = malloc(sizeof(t_data));
 	if (data == NULL)
 		return (NULL);

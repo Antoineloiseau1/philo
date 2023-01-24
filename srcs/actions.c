@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   actions.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anloisea <anloisea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: antoine <antoine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 17:54:48 by antoine           #+#    #+#             */
-/*   Updated: 2023/01/20 17:44:39 by anloisea         ###   ########.fr       */
+/*   Updated: 2023/01/23 12:32:04 by antoine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,10 @@
 
 void	ft_print(t_philo *philo, char *msg)
 {
+	pthread_mutex_lock(&philo->data->print);
 	if (!dead_or_fed(philo->data))
-	{
-		pthread_mutex_lock(&philo->data->print);
 		printf("%lld %d %s\n", get_time(philo->data), philo->pos, msg);
-		pthread_mutex_unlock(&philo->data->print);
-	}
+	pthread_mutex_unlock(&philo->data->print);
 }
 
 void	think(t_philo *philo)
@@ -44,6 +42,8 @@ void	eat(t_philo *philo)
 		pthread_mutex_lock(philo->left_fork);
 		ft_print(philo, "has taken a fork");
 	}
+	else
+		return ;
 	if (!dead_or_fed(philo->data))
 	{
 		pthread_mutex_lock(&philo->right_fork);
@@ -52,7 +52,7 @@ void	eat(t_philo *philo)
 		ft_print(philo, "is eating");
 		msleep(philo->data->time_to_eat);
 		pthread_mutex_unlock(&philo->right_fork);
+		philo->has_eaten++;
 	}
 	pthread_mutex_unlock(philo->left_fork);
-	philo->has_eaten++;
 }

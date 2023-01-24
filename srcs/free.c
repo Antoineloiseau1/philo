@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anloisea <anloisea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: antoine <antoine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 13:30:37 by anloisea          #+#    #+#             */
-/*   Updated: 2023/01/20 17:43:36 by anloisea         ###   ########.fr       */
+/*   Updated: 2023/01/23 12:32:45 by antoine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	free_data(t_philo *philo)
 		pthread_mutex_destroy(&philo[i].right_fork);
 		i++;
 	}
-	// pthread_mutex_destroy(&philos->data->print);
-	// free(philos->data);
+	pthread_mutex_destroy(&philo->data->print);
+	free(philo->data);
 	free(philo);
 }

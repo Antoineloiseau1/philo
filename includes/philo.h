@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anloisea <anloisea@student.42.fr>          +#+  +:+       +#+        */
+/*   By: antoine <antoine@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 17:04:22 by anloisea          #+#    #+#             */
-/*   Updated: 2023/01/20 13:27:42 by anloisea         ###   ########.fr       */
+/*   Updated: 2023/01/23 13:07:45 by antoine          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # include <stdbool.h>
 # include "utils.h"
 
-typedef struct 		s_data
+typedef struct s_data
 {
 	long long		start_time;
 	int				nb_of_philo;
@@ -35,7 +35,7 @@ typedef struct 		s_data
 	pthread_mutex_t	print;
 }					t_data;
 
-typedef struct 		s_philo
+typedef struct s_philo
 {
 	t_data			*data;
 	pthread_t		thread;
@@ -46,7 +46,6 @@ typedef struct 		s_philo
 	bool			is_fed;
 	long long int	last_meal;
 }					t_philo;
-
 
 //DATA_INIT
 t_data			*init_data(char *argv[]);
@@ -60,6 +59,8 @@ long long int	get_time(t_data *data);
 int				create_threads(t_philo *philos);
 int				join_threads(t_philo *philos);
 int				dead_or_fed(t_data *data);
+int				is_time_to_die(t_philo *philo, int i);
+int				is_all_fed(t_philo *philo, int fed_philos);
 
 //ACTIONS
 void			eat(t_philo *philo);
