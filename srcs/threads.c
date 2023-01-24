@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   threads.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antoine <antoine@student.42.fr>            +#+  +:+       +#+        */
+/*   By: anloisea <anloisea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 11:58:30 by anloisea          #+#    #+#             */
-/*   Updated: 2023/01/23 13:11:46 by antoine          ###   ########.fr       */
+/*   Updated: 2023/01/24 17:46:26 by anloisea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,16 @@ void	*check_all_fed(void *arg)
 		i = 0;
 		while (i < philos->data->nb_of_philo)
 		{
+			pthread_mutex_lock(&philos->data->lock_value);
 			if (philos[i].has_eaten == philos->data->must_eat \
 				&& philos[i].is_fed == false)
 			{
+				pthread_mutex_unlock(&philos->data->lock_value);
 				fed_philos++;
 				philos[i].is_fed = true;
 			}
+			else
+				pthread_mutex_unlock(&philos->data->lock_value);
 			i++;
 		}
 		if (is_all_fed(philos, fed_philos))

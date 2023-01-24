@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   data.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antoine <antoine@student.42.fr>            +#+  +:+       +#+        */
+/*   By: anloisea <anloisea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 11:01:49 by antoine           #+#    #+#             */
-/*   Updated: 2023/01/23 13:52:29 by antoine          ###   ########.fr       */
+/*   Updated: 2023/01/24 17:42:02 by anloisea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,5 +62,7 @@ t_data	*init_data(char *argv[])
 	else
 		data->must_eat = -1;
 	pthread_mutex_init(&data->print, NULL);
+	pthread_mutex_init(&data->dorf, NULL);
+	pthread_mutex_init(&data->lock_value, NULL);
 	return (data);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   small_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antoine <antoine@student.42.fr>            +#+  +:+       +#+        */
+/*   By: anloisea <anloisea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 12:33:12 by antoine           #+#    #+#             */
-/*   Updated: 2023/01/23 12:31:47 by antoine          ###   ########.fr       */
+/*   Updated: 2023/01/24 17:42:54 by anloisea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,12 @@ int	is_alpha(char c)
 
 int	dead_or_fed(t_data *data)
 {
+	pthread_mutex_lock(&data->dorf);
 	if (data->all_fed || data->someone_died)
+	{
+		pthread_mutex_unlock(&data->dorf);
 		return (1);
+	}
+	pthread_mutex_unlock(&data->dorf);
 	return (0);
 }

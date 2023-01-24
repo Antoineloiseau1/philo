@@ -6,7 +6,7 @@
 #    By: anloisea <anloisea@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/05 16:52:44 by anloisea          #+#    #+#              #
-#    Updated: 2023/01/24 14:48:37 by anloisea         ###   ########.fr        #
+#    Updated: 2023/01/24 17:37:01 by anloisea         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,10 +30,10 @@ CC		=	gcc
 
 CFLAGS	=	-g -Wall -Werror -Wextra -pthread
 
-#DEBUG	=	-fsanitize=thread
+DEBUG	=	-fsanitize=thread
 
 .c.o:
-			${CC} -c ${CFLAGS} $< -o ${<:.c=.o}
+			${CC} -c ${CFLAGS} ${DEBUG} $< -o ${<:.c=.o}
 
 all:		${NAME}
 

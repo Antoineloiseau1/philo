@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antoine <antoine@student.42.fr>            +#+  +:+       +#+        */
+/*   By: anloisea <anloisea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 17:04:22 by anloisea          #+#    #+#             */
-/*   Updated: 2023/01/23 13:07:45 by antoine          ###   ########.fr       */
+/*   Updated: 2023/01/24 17:41:43 by anloisea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ typedef struct s_data
 	bool			someone_died;
 	bool			all_fed;
 	pthread_mutex_t	print;
+	pthread_mutex_t	dorf;
+	pthread_mutex_t	lock_value;
 }					t_data;
 
 typedef struct s_philo
